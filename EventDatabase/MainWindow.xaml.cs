@@ -53,7 +53,16 @@ namespace EventDatabase
             set { dataGrid.ItemsSource = value; }
         }
 
-        public void Open(string fileName)
+        public void NewFile()
+        {
+            eventTypes.Clear();
+            modifiedEventTypes = false;
+            dataGrid.ItemsSource = new List<Event>();
+            saveDialog.FileName = null;
+            SetTitle(saveDialog.FileName);
+        }
+
+        public void OpenFile(string fileName)
         {
             eventTypes.Clear();
             modifiedEventTypes = false;
@@ -70,7 +79,7 @@ namespace EventDatabase
             SetTitle(fileName);
         }
 
-        void Save(string fileName)
+        void SaveFile(string fileName)
         {
             if (modifiedEventTypes)
             {
@@ -93,11 +102,7 @@ namespace EventDatabase
 
         private void newMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            eventTypes.Clear();
-            modifiedEventTypes = false;
-            dataGrid.ItemsSource = new List<Event>();
-            saveDialog.FileName = null;
-            SetTitle(saveDialog.FileName);
+            NewFile();
         }
 
         private void exitMenuItem_Click(object sender, RoutedEventArgs e)
@@ -110,7 +115,7 @@ namespace EventDatabase
             if (openDialog.ShowDialog() == true)
             {
                 var fileName = openDialog.FileName;
-                Open(fileName);
+                OpenFile(fileName);
             }
         }
 
@@ -120,7 +125,7 @@ namespace EventDatabase
             else
             {
                 var fileName = saveDialog.FileName;
-                Save(fileName);
+                SaveFile(fileName);
             }
         }
 
@@ -148,7 +153,7 @@ namespace EventDatabase
                 var fileName = ((string[])e.Data.GetData(DataFormats.FileDrop)).FirstOrDefault();
                 if (!string.IsNullOrEmpty(fileName))
                 {
-                    Open(fileName);
+                    OpenFile(fileName);
                 }
             }
         }
