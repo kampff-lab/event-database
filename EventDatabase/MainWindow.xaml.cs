@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Collections;
 using Microsoft.Win32;
 using System.IO;
+using System.ComponentModel;
 
 namespace EventDatabase
 {
@@ -22,10 +23,15 @@ namespace EventDatabase
     /// </summary>
     public partial class MainWindow : Window
     {
-        OpenFileDialog openDialog;
-        SaveFileDialog saveDialog;
+        static readonly DependencyPropertyDescriptor TextPropertyChangedDescriptor = DependencyPropertyDescriptor.FromProperty(ComboBox.TextProperty, typeof(ComboBox));
+
         const string FileFilter = "Comma-separated values (*.csv)|*.csv|All files (*.*)|*.*";
         const string TitleText = "Event Database";
+        const string EventTypesFile = "EventTypes.txt";
+        OpenFileDialog openDialog;
+        SaveFileDialog saveDialog;
+        List<string> eventTypes;
+        bool modifiedEventTypes;
 
         public MainWindow()
         {
@@ -33,6 +39,12 @@ namespace EventDatabase
 
             openDialog = new OpenFileDialog { Filter = FileFilter };
             saveDialog = new SaveFileDialog { Filter = FileFilter };
+            eventTypes = new List<string>();
+        }
+
+        public IEnumerable EventTypesSource
+        {
+            get { return eventTypes; }
         }
 
         public IEnumerable ItemsSource
@@ -41,14 +53,39 @@ namespace EventDatabase
             set { dataGrid.ItemsSource = value; }
         }
 
-        private void Open(string fileName)
+        public void Open(string fileName)
         {
+            eventTypes.Clear();
+            modifiedEventTypes = false;
+            var directory = System.IO.Path.GetDirectoryName(fileName);
+            var tagsPath = System.IO.Path.Combine(directory, EventTypesFile);
+            if (File.Exists(tagsPath))
+            {
+                var tags = File.ReadAllLines(tagsPath);
+                eventTypes.AddRange(tags);
+            }
+
             dataGrid.ItemsSource = File.ReadAllLines(fileName).Select(line => Event.Parse(line)).ToList();
             saveDialog.FileName = fileName;
             SetTitle(fileName);
         }
 
-        public void SetTitle(string fileName)
+        void Save(string fileName)
+        {
+            if (modifiedEventTypes)
+            {
+                var directory = System.IO.Path.GetDirectoryName(fileName);
+                var tagsPath = System.IO.Path.Combine(directory, EventTypesFile);
+                modifiedEventTypes = false;
+                File.WriteAllLines(tagsPath, eventTypes.ToArray());
+            }
+
+            var contents = ((IEnumerable<Event>)dataGrid.ItemsSource).Select(evt => evt.ToString()).ToArray();
+            File.WriteAllLines(fileName, contents);
+            SetTitle(fileName);
+        }
+
+        void SetTitle(string fileName)
         {
             if (string.IsNullOrEmpty(fileName)) Title = TitleText;
             else Title = string.Format("{0} ({1})", TitleText, System.IO.Path.GetFileName(fileName));
@@ -56,6 +93,8 @@ namespace EventDatabase
 
         private void newMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            eventTypes.Clear();
+            modifiedEventTypes = false;
             dataGrid.ItemsSource = new List<Event>();
             saveDialog.FileName = null;
             SetTitle(saveDialog.FileName);
@@ -81,9 +120,7 @@ namespace EventDatabase
             else
             {
                 var fileName = saveDialog.FileName;
-                var contents = ((IEnumerable<Event>)dataGrid.ItemsSource).Select(evt => evt.ToString()).ToArray();
-                File.WriteAllLines(fileName, contents);
-                SetTitle(fileName);
+                Save(fileName);
             }
         }
 
@@ -120,6 +157,29 @@ namespace EventDatabase
         {
             e.CanExecute = true;
             e.Handled = true;
+        }
+
+        private void dataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            var header = e.Column.Header as string;
+            if (header == "EventType")
+            {
+                var columnTemplate = new DataGridTemplateColumn();
+                columnTemplate.Header = header;
+                columnTemplate.CellTemplate = (DataTemplate)Resources["EditableComboBoxCellTemplate"];
+                columnTemplate.CellEditingTemplate = (DataTemplate)Resources["EditableComboBoxCellEditingTemplate"];
+                e.Column = columnTemplate;
+            }
+        }
+
+        private void ComboBox_LostFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            var text = ((ComboBox)sender).Text;
+            if (!string.IsNullOrWhiteSpace(text) && !eventTypes.Contains(text))
+            {
+                eventTypes.Add(text);
+                modifiedEventTypes = true;
+            }
         }
     }
 }
