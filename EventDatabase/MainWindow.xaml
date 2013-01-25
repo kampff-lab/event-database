@@ -3,6 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:EventDatabase"
         Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <DataTemplate x:Key="EditableComboBoxCellTemplate">
+            <TextBlock Text="{Binding EventType}"/>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="EditableComboBoxCellEditingTemplate">
+            <ComboBox ItemsSource="{Binding EventTypesSource, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                      Text="{Binding EventType}"
+                      IsReadOnly="False"
+                      IsEditable="True"
+                      LostKeyboardFocus="ComboBox_LostFocus"/>
+        </DataTemplate>
+    </Window.Resources>
+    
     <Window.CommandBindings>
         <CommandBinding Command="New" CanExecute="CommandBinding_CanExecute" Executed="newMenuItem_Click"/>
         <CommandBinding Command="Open" CanExecute="CommandBinding_CanExecute" Executed="openMenuItem_Click"/>
@@ -28,6 +42,7 @@
                 <MenuItem Header="_Exit" Click="exitMenuItem_Click" />
             </MenuItem>
         </Menu>
-        <DataGrid AutoGenerateColumns="True" Name="dataGrid" AllowDrop="True" DragEnter="dataGrid_DragEnter" Drop="dataGrid_Drop" />
+        <DataGrid Name="dataGrid" AutoGenerateColumns="True" AllowDrop="True" DragEnter="dataGrid_DragEnter" Drop="dataGrid_Drop" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn">
+        </DataGrid>
     </DockPanel>
 </Window>

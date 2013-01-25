@@ -14,7 +14,7 @@ namespace EventDatabase
 
         public DateTimeOffset Timestamp { get; set; }
 
-        public EventType EventType { get; set; }
+        public string EventType { get; set; }
 
         public string Value { get; set; }
 
@@ -28,7 +28,7 @@ namespace EventDatabase
             var parameters = s.Split(',');
             var evt = new Event();
             if (parameters.Length > 0) evt.Timestamp = DateTimeOffset.Parse(parameters[0]);
-            if (parameters.Length > 1) evt.EventType = (EventType)Enum.Parse(typeof(EventType), parameters[1]);
+            if (parameters.Length > 1) evt.EventType = parameters[1];
             if (parameters.Length > 2) evt.Value = parameters[2];
             return evt;
         }
