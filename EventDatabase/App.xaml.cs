@@ -21,10 +21,10 @@ namespace EventDatabase
                 Dispatcher.BeginInvoke((Action)(() =>
                 {
                     var window = (MainWindow)MainWindow;
-                    window.Open(fileName);
+                    window.OpenFile(fileName);
                 }));
             }
-            else Dispatcher.BeginInvoke((Action)(() => ((MainWindow)MainWindow).ItemsSource = new List<Event>()));
+            else Dispatcher.BeginInvoke((Action)(() => ((MainWindow)MainWindow).NewFile()));
             base.OnStartup(e);
         }
     }
