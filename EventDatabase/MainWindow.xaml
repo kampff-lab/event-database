@@ -4,6 +4,14 @@
         xmlns:local="clr-namespace:EventDatabase"
         Title="MainWindow" Height="350" Width="525" Icon="/EventDatabase;component/EventDatabase.ico">
     <Window.Resources>
+        <DataTemplate x:Key="DateTimeOffsetCellTemplate">
+            <TextBlock Text="{Binding Timestamp}"/>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="DateTimeOffsetCellEditingTemplate">
+            <DatePicker />
+        </DataTemplate>
+        
         <DataTemplate x:Key="EditableComboBoxCellTemplate">
             <TextBlock Text="{Binding EventType}"/>
         </DataTemplate>

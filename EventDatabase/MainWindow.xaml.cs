@@ -167,6 +167,15 @@ namespace EventDatabase
         private void dataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             var header = e.Column.Header as string;
+            if (header == "Timestamp")
+            {
+                var columnTemplate = new DataGridTemplateColumn();
+                columnTemplate.Header = header;
+                columnTemplate.CellTemplate = (DataTemplate)Resources["DateTimeOffsetCellTemplate"];
+                columnTemplate.CellEditingTemplate = (DataTemplate)Resources["DateTimeOffsetCellEditingTemplate"];
+                e.Column = columnTemplate;
+            }
+
             if (header == "EventType")
             {
                 var columnTemplate = new DataGridTemplateColumn();
