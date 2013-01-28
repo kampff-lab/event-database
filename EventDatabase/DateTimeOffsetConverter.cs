@@ -19,7 +19,7 @@ namespace EventDatabase
 
             if (targetType == typeof(string))
             {
-                return dateTimeOffset.ToString(culture);
+                return dateTimeOffset.ToString(CultureInfo.InvariantCulture);
             }
 
             return Binding.DoNothing;
@@ -44,7 +44,7 @@ namespace EventDatabase
             if (valueType == typeof(string))
             {
                 var dateTimeString = (string)value;
-                return DateTimeOffset.Parse(dateTimeString, culture);
+                return DateTimeOffset.Parse(dateTimeString, CultureInfo.InvariantCulture);
             }
 
             return Binding.DoNothing;
