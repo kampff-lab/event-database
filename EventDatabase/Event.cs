@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 namespace EventDatabase
 {
@@ -20,14 +21,14 @@ namespace EventDatabase
 
         public override string ToString()
         {
-            return string.Format("{0},{1},{2}", Timestamp, EventType, Value);
+            return string.Format("{0},{1},{2}", Timestamp.ToString(CultureInfo.InvariantCulture), EventType, Value);
         }
 
         public static Event Parse(string s)
         {
             var parameters = s.Split(',');
             var evt = new Event();
-            if (parameters.Length > 0) evt.Timestamp = DateTimeOffset.Parse(parameters[0]);
+            if (parameters.Length > 0) evt.Timestamp = DateTimeOffset.Parse(parameters[0], CultureInfo.InvariantCulture);
             if (parameters.Length > 1) evt.EventType = parameters[1];
             if (parameters.Length > 2) evt.Value = parameters[2];
             return evt;
