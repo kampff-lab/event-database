@@ -171,6 +171,7 @@ namespace EventDatabase
             {
                 var columnTemplate = new DataGridTemplateColumn();
                 columnTemplate.Header = header;
+                columnTemplate.SortMemberPath = header;
                 columnTemplate.CellTemplate = (DataTemplate)Resources["DateTimeOffsetCellTemplate"];
                 columnTemplate.CellEditingTemplate = (DataTemplate)Resources["DateTimeOffsetCellEditingTemplate"];
                 e.Column = columnTemplate;
@@ -180,6 +181,7 @@ namespace EventDatabase
             {
                 var columnTemplate = new DataGridTemplateColumn();
                 columnTemplate.Header = header;
+                columnTemplate.SortMemberPath = header;
                 columnTemplate.CellTemplate = (DataTemplate)Resources["EditableComboBoxCellTemplate"];
                 columnTemplate.CellEditingTemplate = (DataTemplate)Resources["EditableComboBoxCellEditingTemplate"];
                 e.Column = columnTemplate;
