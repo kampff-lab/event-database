@@ -4,12 +4,13 @@
         xmlns:local="clr-namespace:EventDatabase"
         Title="MainWindow" Height="350" Width="525" Icon="/EventDatabase;component/EventDatabase.ico">
     <Window.Resources>
+        <local:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
         <DataTemplate x:Key="DateTimeOffsetCellTemplate">
-            <TextBlock Text="{Binding Timestamp}"/>
+            <TextBlock Text="{Binding Timestamp, Converter={StaticResource DateTimeOffsetConverter}}"/>
         </DataTemplate>
         
         <DataTemplate x:Key="DateTimeOffsetCellEditingTemplate">
-            <DatePicker />
+            <DatePicker SelectedDate="{Binding Timestamp, Converter={StaticResource DateTimeOffsetConverter}}"/>
         </DataTemplate>
         
         <DataTemplate x:Key="EditableComboBoxCellTemplate">
