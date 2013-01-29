@@ -17,7 +17,7 @@ namespace EventDatabase
                 return dateTimeOffset.LocalDateTime;
             }
 
-            if (targetType == typeof(string))
+            if (targetType == typeof(string) || targetType == typeof(object))
             {
                 return dateTimeOffset.ToString(CultureInfo.InvariantCulture);
             }
