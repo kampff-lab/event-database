@@ -66,9 +66,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClipboardHelper.cs" />
     <Compile Include="DateTimeOffsetConverter.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventType.cs" />
+    <Compile Include="ExtendedDataGrid.cs" />
+    <Compile Include="ExtendedDataGridTemplateColumn.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
