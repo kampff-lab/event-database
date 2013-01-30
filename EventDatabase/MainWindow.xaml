@@ -30,7 +30,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="ValueCellEditingTemplate">
-            <TextBox Text="{Binding Value}"/>
+            <TextBox Text="{Binding Value}" local:TextBoxFocusManager.Focus="True"/>
         </DataTemplate>
     </Window.Resources>
     
