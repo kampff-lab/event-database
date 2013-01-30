@@ -89,8 +89,10 @@ namespace EventDatabase
                 File.WriteAllLines(tagsPath, eventTypes.ToArray());
             }
 
-            var contents = ((IEnumerable<Event>)dataGrid.ItemsSource).Select(evt => evt.ToString()).ToArray();
+            var sortedContents = ((IEnumerable<Event>)dataGrid.ItemsSource).OrderBy(evt => evt.Timestamp).ToList();
+            var contents = sortedContents.Select(evt => evt.ToString()).ToArray();
             File.WriteAllLines(fileName, contents);
+            dataGrid.ItemsSource = sortedContents;
             SetTitle(fileName);
         }
 
