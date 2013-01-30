@@ -5,24 +5,32 @@
         Title="MainWindow" Height="350" Width="525" Icon="/EventDatabase;component/EventDatabase.ico">
     <Window.Resources>
         <local:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
-        <DataTemplate x:Key="DateTimeOffsetCellTemplate">
+        <DataTemplate x:Key="TimestampCellTemplate">
             <TextBlock Text="{Binding Timestamp, Converter={StaticResource DateTimeOffsetConverter}}"/>
         </DataTemplate>
         
-        <DataTemplate x:Key="DateTimeOffsetCellEditingTemplate">
+        <DataTemplate x:Key="TimestampCellEditingTemplate">
             <DatePicker SelectedDate="{Binding Timestamp, Converter={StaticResource DateTimeOffsetConverter}}"/>
         </DataTemplate>
         
-        <DataTemplate x:Key="EditableComboBoxCellTemplate">
+        <DataTemplate x:Key="EventTypeCellTemplate">
             <TextBlock Text="{Binding EventType}"/>
         </DataTemplate>
         
-        <DataTemplate x:Key="EditableComboBoxCellEditingTemplate">
+        <DataTemplate x:Key="EventTypeCellEditingTemplate">
             <ComboBox ItemsSource="{Binding EventTypesSource, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                       Text="{Binding EventType}"
                       IsReadOnly="False"
                       IsEditable="True"
                       LostKeyboardFocus="ComboBox_LostFocus"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ValueCellTemplate">
+            <TextBlock Text="{Binding Value}"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ValueCellEditingTemplate">
+            <TextBox Text="{Binding Value}"/>
         </DataTemplate>
     </Window.Resources>
     
@@ -51,7 +59,6 @@
                 <MenuItem Header="_Exit" Click="exitMenuItem_Click" />
             </MenuItem>
         </Menu>
-        <DataGrid Name="dataGrid" AutoGenerateColumns="True" AllowDrop="True" DragEnter="dataGrid_DragEnter" Drop="dataGrid_Drop" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn">
-        </DataGrid>
+        <local:ExtendedDataGrid x:Name="dataGrid" AutoGenerateColumns="True" AllowDrop="True" DragEnter="dataGrid_DragEnter" Drop="dataGrid_Drop" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn"/>
     </DockPanel>
 </Window>

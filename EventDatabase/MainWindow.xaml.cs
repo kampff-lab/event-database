@@ -169,23 +169,34 @@ namespace EventDatabase
             var header = e.Column.Header as string;
             if (header == "Timestamp")
             {
-                var columnTemplate = new DataGridTemplateColumn();
+                var columnTemplate = new ExtendedDataGridTemplateColumn();
                 columnTemplate.Header = header;
                 columnTemplate.SortMemberPath = header;
                 columnTemplate.ClipboardContentBinding = new Binding(header) { Converter = (IValueConverter)Resources["DateTimeOffsetConverter"] };
-                columnTemplate.CellTemplate = (DataTemplate)Resources["DateTimeOffsetCellTemplate"];
-                columnTemplate.CellEditingTemplate = (DataTemplate)Resources["DateTimeOffsetCellEditingTemplate"];
+                columnTemplate.CellTemplate = (DataTemplate)Resources["TimestampCellTemplate"];
+                columnTemplate.CellEditingTemplate = (DataTemplate)Resources["TimestampCellEditingTemplate"];
                 e.Column = columnTemplate;
             }
 
             if (header == "EventType")
             {
-                var columnTemplate = new DataGridTemplateColumn();
+                var columnTemplate = new ExtendedDataGridTemplateColumn();
                 columnTemplate.Header = header;
                 columnTemplate.SortMemberPath = header;
                 columnTemplate.ClipboardContentBinding = new Binding(header);
-                columnTemplate.CellTemplate = (DataTemplate)Resources["EditableComboBoxCellTemplate"];
-                columnTemplate.CellEditingTemplate = (DataTemplate)Resources["EditableComboBoxCellEditingTemplate"];
+                columnTemplate.CellTemplate = (DataTemplate)Resources["EventTypeCellTemplate"];
+                columnTemplate.CellEditingTemplate = (DataTemplate)Resources["EventTypeCellEditingTemplate"];
+                e.Column = columnTemplate;
+            }
+
+            if (header == "Value")
+            {
+                var columnTemplate = new ExtendedDataGridTemplateColumn();
+                columnTemplate.Header = header;
+                columnTemplate.SortMemberPath = header;
+                columnTemplate.ClipboardContentBinding = new Binding(header);
+                columnTemplate.CellTemplate = (DataTemplate)Resources["ValueCellTemplate"];
+                columnTemplate.CellEditingTemplate = (DataTemplate)Resources["ValueCellEditingTemplate"];
                 e.Column = columnTemplate;
             }
         }
